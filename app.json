@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Bazaar",
+    "slug": "bazaar-india",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "bazaar",
+    "platforms": ["android", "web"],
+    "android": {
+      "package": "com.bazaar.india"
+    },
+    "plugins": ["expo-router", "expo-image-picker", "expo-location"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
