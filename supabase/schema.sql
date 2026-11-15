@@ -96,7 +96,12 @@ create policy "participants send messages" on public.messages for insert with ch
 create policy "recipients update messages" on public.messages for update using (exists (select 1 from public.chats where chats.id = messages.chat_id and auth.uid() in (buyer_id, seller_id)));
 
 insert into storage.buckets (id, name, public) values ('ad-images', 'ad-images', true) on conflict (id) do nothing;
+insert into storage.buckets (id, name, public) values ('avatars', 'avatars', true) on conflict (id) do nothing;
 create policy "public can view ad images" on storage.objects for select using (bucket_id = 'ad-images');
+create policy "public can view avatars" on storage.objects for select using (bucket_id = 'avatars');
+create policy "users upload their avatars" on storage.objects for insert with check (bucket_id = 'avatars' and auth.uid()::text = (storage.foldername(name))[1]);
+create policy "users update their avatars" on storage.objects for update using (bucket_id = 'avatars' and auth.uid()::text = (storage.foldername(name))[1]);
+create policy "users delete their avatars" on storage.objects for delete using (bucket_id = 'avatars' and auth.uid()::text = (storage.foldername(name))[1]);
 create policy "users upload their ad images" on storage.objects for insert with check (bucket_id = 'ad-images' and auth.uid()::text = (storage.foldername(name))[1]);
 create policy "users update their ad images" on storage.objects for update using (bucket_id = 'ad-images' and auth.uid()::text = (storage.foldername(name))[1]);
 create policy "users delete their ad images" on storage.objects for delete using (bucket_id = 'ad-images' and auth.uid()::text = (storage.foldername(name))[1]);
